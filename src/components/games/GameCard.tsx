@@ -29,7 +29,7 @@ const GameCard: React.FC<Game> = (game) => {
 
     return (
         <Card className={classes.root}>
-            <CardActionArea>
+            <CardActionArea href={game.game_url}>
                 <CardMedia
                     className={classes.media}
                     image={game.thumbnail}
@@ -46,9 +46,11 @@ const GameCard: React.FC<Game> = (game) => {
             </CardActionArea>
             <CardActions>
                 <Button size="small" color="primary">
-                    Share
-        </Button>
-        {/* learn more needed */}
+                    <a style={{ color: "#3f51b5", textDecoration: "none" }} href={game.game_url}>Play</a>
+                </Button>
+                <Button size="small" color="primary">
+                    <a style={{ color: "#3f51b5", textDecoration: "none" }} href={game.freetogame_profile_url}>Review</a>
+                </Button>
                 <Button size="small" color="primary">
                     <a style={{ color: "#3f51b5", textDecoration: "none" }} href={learnMoreLink(game.title)}>Google</a>
                 </Button>

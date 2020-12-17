@@ -35,25 +35,42 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Mount {
     open: boolean;
     setOpen: (open: boolean) => void;
+    applyFilters: (obj: { [key: string]: boolean }) => void;
+}
+
+interface GenreFormat {
+    [key: string]: boolean;
 }
 
 const MaxWidthDialog: React.FC<Mount> = (props) => {
     const classes = useStyles();
-    const { open, setOpen } = props;
+    const { open, setOpen, applyFilters } = props;
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('xs');
 
-    const handleClose = () => {
+    const handleClose = (): void => {
         setOpen(false);
     };
 
-    const handleMaxWidthChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setMaxWidth(event.target.value as DialogProps['maxWidth']);
-    };
+    const [genreHash, setGenreHash] = React.useState<GenreFormat>({
+        "MMORPG": false,
+        "Shooter": false,
+        "MMO": false,
+        "Social": false,
+        "Card Game": false,
+        "MOBA": false,
+        "Fighting": false,
+        "Strategy": false,
+        "Racing": false,
+        "Sports": false,
+        "Fantasy": false,
+        "Battle Royale": false,
+    })
 
-    const handleFullWidthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFullWidth(event.target.checked);
-    };
+    const applyButton = ():void =>{
+        applyFilters(genreHash)
+        handleClose()
+    }
 
     return (
         <React.Fragment>
@@ -69,13 +86,13 @@ const MaxWidthDialog: React.FC<Mount> = (props) => {
                     <DialogContentText>
                         Select up to however you want!
                     </DialogContentText>
-                    <GenreGridList />
+                    <GenreGridList genreHash={genreHash} setGenreHash={setGenreHash} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    {/* <Button onClick={handleClose} color="primary">
                         Close
-          </Button>
-                    <Button onClick={handleClose} color="primary">
+          </Button> */}
+                    <Button onClick={applyButton} variant={"contained"} color="primary">
                         Apply
           </Button>
                 </DialogActions>

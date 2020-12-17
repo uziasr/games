@@ -28,38 +28,16 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface Genre {
-    "MMORPG": boolean;
-    "Shooter": boolean;
-    "MMO": boolean;
-    "Social": boolean;
-    "Card Game": boolean;
-    "MOBA": boolean;
-    "Fighting": boolean;
-    "Strategy": boolean;
-    "Racing": boolean;
-    "Sports": boolean;
-    "Fantasy": boolean;
-    "Battle Royale": boolean;
+interface Prop {
+    genreHash: { [key: string]: boolean };
+    setGenreHash: (obj: { [key: string]: boolean }) => void
 }
 
 
-const TitlebarGridList: React.FC = () => {
+const TitlebarGridList: React.FC<Prop> = (props) => {
+    const { genreHash, setGenreHash } = props
     const classes = useStyles();
-    const [genreHash, setGenreHash] = useState<Genre>({
-        "MMORPG": true,
-        "Shooter": true,
-        "MMO": true,
-        "Social": true,
-        "Card Game": true,
-        "MOBA": true,
-        "Fighting": true,
-        "Strategy": true,
-        "Racing": true,
-        "Sports": true,
-        "Fantasy": true,
-        "Battle Royale": true,
-    })
+
 
     return (
         <div className={classes.root}>
@@ -67,14 +45,14 @@ const TitlebarGridList: React.FC = () => {
                 <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                     <ListSubheader component="div">Genres</ListSubheader>
                 </GridListTile>
-                {tileData.map(tile => (
-                    <GridListTile key={tile.img}>
+                {tileData.map((tile, i) => (
+                    <GridListTile key={`${tile.img}${i}`}>
                         <img src={tile.img} alt={tile.title} />
                         <GridListTileBar
                             title={tile.title}
                             actionIcon={
                                 <IconButton onClick={() => setGenreHash({ ...genreHash, [tile.title]: !genreHash[tile.title] })} aria-label={`info about ${tile.title}`} className={classes.icon}>
-                                    <AddCircleIcon />
+                                    <AddCircleIcon color={genreHash[tile.title] ? "primary": "inherit" } />
                                 </IconButton>
                             }
                         />
@@ -87,5 +65,4 @@ const TitlebarGridList: React.FC = () => {
 
 export default TitlebarGridList
 
-const genres: string[] = ["MMORPG", "Shooter", "MMO", "Social", "Card Game", "MOBA", "Fighting", "Strategy", "Racing", "Sports", "Fantasy", " MMORPG", "Battle Royale"]
 const platoform: string[] = ["PC (Windows)", "Web Browser"]

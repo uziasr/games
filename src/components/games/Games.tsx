@@ -23,10 +23,12 @@ const Games: React.FC = ({ }) => {
 
     const [loadPerPage, setLoadPerPage] = useState<number>(24)
     const [games, setGame] = useState<Game[]>([])
+    const [filteredGames, setFilteredGames] = useState<Game[]>([])
     const inputRef = useRef<HTMLInputElement>(null);
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [open, setOpen] = useState<boolean>(false)
-    const TotalPages: number = Math.ceil(games.length / loadPerPage)
+    const TotalPages: number = Math.ceil(filteredGames.length == 0 ? games.length / loadPerPage : filteredGames.length / loadPerPage)
+    const [filterInput, setFilterInput] = useState<string>("")
 
     useEffect(() => {
         axios.get<Game[]>('api/games', { headers: { 'Content-Type': 'application/json' } })
@@ -35,22 +37,33 @@ const Games: React.FC = ({ }) => {
     }, [])
 
     const loadGames = (): Game[] => {
-        return games.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage)
+        let gamesArr: Game[] = filteredGames.length == 0 ? games.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage) : filteredGames.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage)
+        return gamesArr.filter(game => (
+            (RegExp(new RegExp(filterInput.toLowerCase())).test(game.title.toLowerCase()))
+        ))
     }
 
     const openFilters = (): void => {
         setOpen(true)
     }
 
+    const applyFilters = (obj: { [key: string]: boolean }): void => {
+        setFilteredGames((): Game[] => (
+            games.filter(game => obj[game.genre.trim()])
+        ))
+        setCurrentPage(1)
+    }
+
     return (
         <>
-            {/* <input ref={inputRef} onChange={(event: React.ChangeEvent<HTMLInputElement>) => 1} /> */}
             <div className="inputFilterWrap">
                 <TextField
                     style={{ width: "40%" }}
                     id="outlined-basic"
                     label="Search By Name"
                     variant="outlined"
+                    value={filterInput}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setFilterInput(event.target.value) }}
                 />
                 <IconButton
                     aria-label="toggle password visibility"
@@ -66,7 +79,7 @@ const Games: React.FC = ({ }) => {
             <div className="paginationWrap">
                 <Pagination count={TotalPages} onChange={(event: React.ChangeEvent<unknown>, page: number) => { setCurrentPage(page) }} variant="outlined" shape="rounded" />
             </div>
-            <GameFilterDialogue open={open} setOpen={setOpen} />
+            <GameFilterDialogue open={open} setOpen={setOpen} applyFilters={applyFilters} />
         </>
     )
 }
