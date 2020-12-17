@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import "./index.css"
 
-const Games: React.FC = ({ }) => {
+const Games: React.FC = () => {
 
     const [loadPerPage] = useState<number>(24)
     const [games, setGame] = useState<Game[]>([])
