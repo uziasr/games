@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import Pagination from '@material-ui/lab/Pagination';
 import axios from "axios"
 import GameFilterDialogue from "./GameFilterDialogue"
@@ -16,7 +16,7 @@ const Games: React.FC = ({ }) => {
     const [filteredGames, setFilteredGames] = useState<Game[]>([])
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [open, setOpen] = useState<boolean>(false)
-    const TotalPages: number = Math.ceil(filteredGames.length == 0 ? games.length / loadPerPage : filteredGames.length / loadPerPage)
+    const TotalPages: number = Math.ceil(filteredGames.length === 0 ? games.length / loadPerPage : filteredGames.length / loadPerPage)
     const [filterInput, setFilterInput] = useState<string>("")
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const Games: React.FC = ({ }) => {
     }, [])
 
     const loadGames = (): Game[] => {
-        let gamesArr: Game[] = filteredGames.length == 0 ? games.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage) : filteredGames.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage)
+        let gamesArr: Game[] = filteredGames.length === 0 ? games.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage) : filteredGames.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage)
         return gamesArr.filter(game => (
             (RegExp(new RegExp(filterInput.toLowerCase())).test(game.title.toLowerCase()))
         ))
