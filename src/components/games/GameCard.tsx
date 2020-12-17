@@ -48,8 +48,9 @@ const GameCard: React.FC<Game> = (game) => {
                 <Button size="small" color="primary">
                     Share
         </Button>
+        {/* learn more needed */}
                 <Button size="small" color="primary">
-                    <a style={{color:"#3f51b5", textDecoration: "none"}} href={learnMoreLink(game.title)}>Learn More</a>
+                    <a style={{ color: "#3f51b5", textDecoration: "none" }} href={learnMoreLink(game.title)}>Google</a>
                 </Button>
             </CardActions>
         </Card>
