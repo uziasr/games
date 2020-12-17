@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react"
-import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import axios from "axios"
 import GameFilterDialogue from "./GameFilterDialogue"
@@ -10,21 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import "./index.css"
 
-
-interface Categories {
-    genre: string[]
-    platform: string[]
-    publisher: string[]
-    developer: string[]
-    release_date: string[]
-}
-
 const Games: React.FC = ({ }) => {
 
-    const [loadPerPage, setLoadPerPage] = useState<number>(24)
+    const [loadPerPage] = useState<number>(24)
     const [games, setGame] = useState<Game[]>([])
     const [filteredGames, setFilteredGames] = useState<Game[]>([])
-    const inputRef = useRef<HTMLInputElement>(null);
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [open, setOpen] = useState<boolean>(false)
     const TotalPages: number = Math.ceil(filteredGames.length == 0 ? games.length / loadPerPage : filteredGames.length / loadPerPage)
