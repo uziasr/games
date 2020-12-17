@@ -20,7 +20,7 @@ const Games: React.FC = () => {
     const [filterInput, setFilterInput] = useState<string>("")
 
     useEffect(() => {
-        axios.get<Game[]>('api/games', { headers: { 'Content-Type': 'application/json' } })
+        axios.get<Game[]>('https://www.freetogame.com/api/games', { headers: { 'Content-Type': 'application/json' } })
             .then(res => setGame(res.data))
             .catch(err => console.log(err))
     }, [])
