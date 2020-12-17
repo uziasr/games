@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react"
-
+import axios from "axios"
+import Game from "./index"
+import GameCard from "./GameCard"
+import "./index.css"
 
 interface Person {
     firstName: string;
@@ -16,17 +19,34 @@ interface Props {
     },
     person: Person;
 }
-// const Games: React.FC<Props> = () => {
 
-const Games: React.FC = ({}) => {
+const Games: React.FC = ({ }) => {
 
-    const [count, setCount] = useState<number | null>(5)
+    const [loadByHundred, setLoadByHundred] = useState<number>(100)
+    const [games, setGame] = useState<Game[]>([])
     const inputRef = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        // axios.get<Game[]>('api/games', { headers: { 'Content-Type': 'application/json' } })
+        //     .then(res => setGame(res.data))
+        //     .catch(err => console.log(err))
+    }, [])
 
-    return ( 
+    const loadGames = (): Game[] => {
+        return games.slice(0, loadByHundred)
+    }
+
+    const incrementLoad = (): void => {
+        setLoadByHundred(loadByHundred + 100)
+    }
+
+    return (
         <>
-        <input ref={inputRef} onChange={(event: React.ChangeEvent<HTMLInputElement>)=>1}/>
+            <input ref={inputRef} onChange={(event: React.ChangeEvent<HTMLInputElement>) => 1} />
+            <div className="gameCardWrap">
+                {loadGames().map<React.FunctionComponentElement<any>>(game => <GameCard key={game.id} {...game} />)}
+            </div>
+            <button onClick={incrementLoad}>View More</button>
         </>
     )
 }
