@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Pagination from '@material-ui/lab/Pagination';
 // import axios from "axios"
 import GameFilterDialogue from "./GameFilterDialogue"
@@ -12,7 +12,7 @@ import "./index.css"
 const Games: React.FC = () => {
 
     const [loadPerPage] = useState<number>(24)
-    const [games, setGame] = useState<Game[]>([])
+    const [games] = useState<Game[]>([])
     const [filteredGames, setFilteredGames] = useState<Game[]>(gamesArr)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [open, setOpen] = useState<boolean>(false)
