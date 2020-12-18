@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import Pagination from '@material-ui/lab/Pagination';
-import axios from "axios"
+// import axios from "axios"
 import GameFilterDialogue from "./GameFilterDialogue"
-import Game from "./index"
+import { Game, gamesArr } from "./index"
 import GameCard from "./GameCard"
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,17 +13,17 @@ const Games: React.FC = () => {
 
     const [loadPerPage] = useState<number>(24)
     const [games, setGame] = useState<Game[]>([])
-    const [filteredGames, setFilteredGames] = useState<Game[]>([])
+    const [filteredGames, setFilteredGames] = useState<Game[]>(gamesArr)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [open, setOpen] = useState<boolean>(false)
     const TotalPages: number = Math.ceil(filteredGames.length === 0 ? games.length / loadPerPage : filteredGames.length / loadPerPage)
     const [filterInput, setFilterInput] = useState<string>("")
 
-    useEffect(() => {
-        axios.get<Game[]>(`${process.env.REACT_APP_API_DOMAIN ||'' }api/games`, { headers: { 'Content-Type': 'application/json' } })
-            .then(res => setGame(res.data))
-            .catch(err => console.log(err))
-    }, [])
+    // useEffect(() => {
+    //     axios.get<Game[]>(`${process.env.REACT_APP_API_DOMAIN ||'' }api/games`, { headers: { 'Content-Type': 'application/json' } })
+    //         .then(res => setGame(res.data))
+    //         .catch(err => console.log(err))
+    // }, [])
 
     const loadGames = (): Game[] => {
         let gamesArr: Game[] = filteredGames.length === 0 ? games.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage) : filteredGames.slice((currentPage - 1) * loadPerPage, loadPerPage * currentPage)
